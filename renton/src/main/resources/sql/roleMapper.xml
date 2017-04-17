@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.jlab.renton.role.dao.RoleDao">
+	<select id="findByRoleId" parameterType="string" resultType="roleVo">
+		SELECT group_id as roleId, description, group_name as roleName FROM tb_groups WHERE group_id = #{roleId}
+	</select>
+	
+	<select id="findRoles" resultType="roleVo">
+		select group_id as roleId, description, group_name as roleName from tb_groups
+	</select>
+	
+	<select id="findUserRole" parameterType = "string" resultType="roleVo">
+		select 
+			gm.group_id as roleId, g.group_name as roleName 
+		from 
+			tb_group_members gm
+			inner join tb_groups g
+			on gm.group_id = g.group_id
+		where
+			gm.user_id = #{value} 
+	</select>
+	
+	<select id="findRoleAuth" parameterType = "string" resultType="string">
+		select ga.authority_id as authId
+		from tb_group_authorities ga
+			inner join tb_authorities a
+			on ga.authority_id = a.authority_id
+		where
+			ga.group_id = #{value}
+	</select>
+	
+	<select id="findRoleAuthName" parameterType = "string" resultType="string">
+		select a.authority
+		from tb_group_authorities ga
+			inner join tb_authorities a
+			on ga.authority_id = a.authority_id
+		where
+			ga.group_id = #{value}
+	</select>
+	
+	<insert id="insertRole" parameterType = "roleVo" useGeneratedKeys="true" keyProperty="roleId">
+		insert into tb_groups (
+			group_name, 
+			description 
+		) values (
+			#{roleName},
+			#{description}
+		)  
+	</insert>
+	
+	<update id="updateRole" parameterType="roleVo">
+		update tb_groups
+		set
+			group_name = #{roleName},
+			description = #{description}
+		where group_id = #{roleId}
+	</update>
+
+	<delete id="deleteRole" parameterType = "string">
+		delete from tb_groups
+		where group_id = #{value}
+	</delete>
+	
+	<insert id="insertRoleAuth" parameterType = "map">
+		insert into tb_group_authorities (
+			group_id,
+			authority_id
+		) values (
+			#{roleId},
+			#{authId}
+		)
+	</insert>
+	
+	<delete id="deleteRoleAuth" parameterType = "string">
+		delete from tb_group_authorities
+		where group_id = #{value}
+	</delete>
+</mapper>

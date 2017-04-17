@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jlab.renton.user.dao.UserDao">
+
+	<select id="findByUserId" parameterType="string" resultType="userVo">
+		SELECT 
+			user_id as userId, 
+			email, password, 
+			user_name as userName
+		FROM 
+			tb_users 
+		WHERE 
+			USER_ID = #{userId}
+	</select>
+	
+	<select id="findUsers" resultType="userVo">
+		select user_id as userId, email, password, user_name as userName from tb_users
+	</select>
+	
+	<insert id="insertUser" parameterType = "userVo">
+		insert into tb_users (
+			user_id, 
+			user_name, 
+			email, 
+			password) 
+		values (
+			#{userId},
+			#{userName},
+			#{email},
+			#{password}
+		)  
+	</insert>
+	
+	<update id="updateUser" parameterType="userVo">
+		update tb_users
+		set
+			user_name = #{userName},
+			email = #{email},
+			password = #{password}
+		where user_id = #{userId}
+	</update>
+
+	<delete id="deleteUser" parameterType = "string">
+		delete from tb_users
+		where user_id = #{value}
+	</delete>
+</mapper>

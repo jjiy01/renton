@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.jlab.renton.auth.dao.AuthDao">
+	<select id="findByAuthId" parameterType="string" resultType="authVo">
+		SELECT authority_id as authId, description, authority FROM tb_authorities WHERE authority_id = #{authId}
+	</select>
+	
+	<select id="findAuths" resultType="authVo">
+		select authority_id as authId, description, authority from tb_authorities
+	</select>
+	
+	<insert id="insertAuth" parameterType = "authVo" useGeneratedKeys="true" keyProperty="authId">
+		insert into tb_authorities (
+			authority, 
+			description) 
+		values (
+			#{authority},
+			#{description}
+		)  
+	</insert>
+	
+	<update id="updateAuth" parameterType="authVo">
+		update tb_authorities
+		set
+			description = #{description}
+		where authority_id = #{authId}
+	</update>
+
+	<delete id="deleteAuth" parameterType = "string">
+		delete from tb_authorities
+		where authority_id = #{value}
+	</delete>
+</mapper>
