@@ -17,28 +17,28 @@ public class AuthController {
 	@Autowired
 	private AuthService authService;
 	
-	@PreAuthorize("hasAuthority('AUTH_READ')")
+	@PreAuthorize("hasPermission('AUTH', 'READ')")
 	@RequestMapping("")
 	public String viewAuths(Model model) {
 		model.addAttribute("auths", authService.findAuths());
 		return "auth/viewAuths";
 	}
 	
-	@PreAuthorize("hasAuthority('AUTH_READ')")
+	@PreAuthorize("hasPermission('AUTH', 'READ')")
 	@RequestMapping("/popup")
 	public String viewAuthsPopup(Model model) {
 		model.addAttribute("auths", authService.findAuths());
 		return "auth/viewAuthsPopup";
 	}
 	
-	@PreAuthorize("hasAuthority('AUTH_READ')")
+	@PreAuthorize("hasPermission('AUTH', 'READ')")
 	@RequestMapping("/id/{authId}")
 	public String viewAuth(@PathVariable String authId, Model model) {
 		model.addAttribute("auth", authService.findByAuthId(authId));
 		return "auth/viewAuth";
 	}
 	
-	@PreAuthorize("hasAuthority('AUTH_WRITE')")
+	@PreAuthorize("hasPermission('AUTH', 'WRITE')")
 	@RequestMapping("/insert")
 	public String insertAuth(AuthVo authVo, Model model) {
 		authService.insertAuth(authVo);

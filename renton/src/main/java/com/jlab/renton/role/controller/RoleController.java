@@ -31,14 +31,14 @@ public class RoleController {
 	@Autowired
 	protected SessionRegistry sessionRegistry;
 	
-	@PreAuthorize("hasAuthority('ROLE_READ')")
+	@PreAuthorize("hasPermission('ROLE', 'READ')")
 	@RequestMapping("")
 	public String viewRoles(Model model) {
 		model.addAttribute("roles", roleService.findRoles());
 		return "role/viewRoles";
 	}
 	
-	@PreAuthorize("hasAuthority('ROLE_READ')")
+	@PreAuthorize("hasPermission('ROLE', 'READ')")
 	@RequestMapping(value = "/id/{roleId}")
 	public String viewRole(@PathVariable String roleId, Model model) {
 		model.addAttribute("role", roleService.findByRoleId(roleId));
@@ -46,14 +46,14 @@ public class RoleController {
 		return "role/viewRole";
 	}
 	
-	@PreAuthorize("hasAuthority('ROLE_WRITE')")
+	@PreAuthorize("hasPermission('ROLE', 'WRITE')")
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)
 	public String insertUserView(Model model) {
 		model.addAttribute("auths", authService.findAuths());
 		return "role/insertRole";
 	}
 	
-	@PreAuthorize("hasAuthority('ROLE_WRITE')")
+	@PreAuthorize("hasPermission('ROLE', 'WRITE')")
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insertUser(RoleVo roleVo, Model model) {
 		roleService.insertRole(roleVo);
@@ -61,7 +61,7 @@ public class RoleController {
 		return "role/viewRole";
 	}
 	
-	@PreAuthorize("hasAuthority('ROLE_WRITE')")
+	@PreAuthorize("hasPermission('ROLE', 'WRITE')")
 	@RequestMapping(value = "/update/{roleId}", method = RequestMethod.GET)
 	public String updateUserView(@PathVariable String roleId, Model model) {
 		model.addAttribute("role", roleService.findByRoleId(roleId));
@@ -69,7 +69,7 @@ public class RoleController {
 		return "role/updateRole";
 	}
 	
-	@PreAuthorize("hasAuthority('ROLE_WRITE')")
+	@PreAuthorize("hasPermission('ROLE', 'WRITE')")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updateUser(RoleVo roleVo, Model model, Authentication auth) {
 		roleService.updateRole(roleVo);

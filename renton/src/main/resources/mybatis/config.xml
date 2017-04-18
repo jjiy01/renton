@@ -14,5 +14,6 @@
 		<typeAlias alias="userVo" type="com.jlab.renton.user.vo.UserVo" />
 		<typeAlias alias="roleVo" type="com.jlab.renton.role.vo.RoleVo" />
 		<typeAlias alias="authVo" type="com.jlab.renton.auth.vo.AuthVo" />
+		<typeAlias alias="domainVo" type="com.jlab.renton.domain.vo.DomainVo" />
 	</typeAliases>
 </configuration>

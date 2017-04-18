@@ -19,7 +19,9 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
 	
-	<sec:global-method-security proxy-target-class="true" pre-post-annotations="enabled"/>
+	<sec:global-method-security proxy-target-class="true" pre-post-annotations="enabled">
+		<sec:expression-handler ref="defaultExpressionHandler"/>
+	</sec:global-method-security>
 	
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler/>

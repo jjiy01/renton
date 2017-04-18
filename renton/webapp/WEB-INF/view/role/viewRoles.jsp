@@ -14,7 +14,7 @@
 <c:out value="${role.description}" /></li>
 </c:forEach>
 </ol>
-<sec:authorize access="hasAuthority('ROLE_WRITE')">
+<sec:authorize access="hasPermission('ROLE_WRITE')">
 <button onclick="javascript:location.href='<c:url value="/role/insert"/>';">생성</button>
 </sec:authorize>
 </body>

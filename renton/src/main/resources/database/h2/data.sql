@@ -12,6 +12,17 @@ insert into tb_authorities(authority) values ('ROLE_WRITE');
 insert into tb_groups(group_name) values ('ROLE_ADMIN');
 insert into tb_groups(group_name) values ('ROLE_USER');
 
+insert into tb_domain(domain_name) values ('USER');
+insert into tb_domain(domain_name) values ('AUTH');
+insert into tb_domain(domain_name) values ('ROLE');
+
+insert into tb_acl_entry(group_id, domain_id, permission) values (1, 1, 3);
+insert into tb_acl_entry(group_id, domain_id, permission) values (1, 2, 3);
+insert into tb_acl_entry(group_id, domain_id, permission) values (1, 3, 3);
+insert into tb_acl_entry(group_id, domain_id, permission) values (2, 1, 1);
+insert into tb_acl_entry(group_id, domain_id, permission) values (2, 2, 1);
+insert into tb_acl_entry(group_id, domain_id, permission) values (2, 3, 1);
+
 insert into tb_group_authorities(group_id, authority_id)
 values (
 	select group_id from tb_groups where group_name = 'ROLE_ADMIN',

@@ -39,11 +39,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		
 		if(roles != null) {
 			for(RoleVo role : roles) {
-				auths = roleDao.findRoleAuthName(role.getRoleId());
-				
-				for(String auth : auths) {
-					authorities.add(new SimpleGrantedAuthority(auth));
-				}
+				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 			}
 		}
 		

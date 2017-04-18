@@ -17,7 +17,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@PreAuthorize("hasAuthority('USER_WRITE')")
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
 	@RequestMapping(value = "/insert")
 	public String insertUser(UserVo userVo, Model model) {
 		userService.insertUser(userVo);
@@ -25,7 +25,7 @@ public class UserController {
 		return "user/viewUser";
 	}
 	
-	@PreAuthorize("hasAuthority('USER_WRITE')")
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
 	@RequestMapping("/update")
 	public String updateUser(UserVo userVo, Model model) {
 		userService.updateUser(userVo);
@@ -33,21 +33,21 @@ public class UserController {
 		return "user/viewUser";
 	}
 	
-	@PreAuthorize("hasAuthority('USER_WRITE')")
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
 	@RequestMapping("/delete")
 	public String deleteUser(String userId) {
 		userService.deleteUser(userId);
 		return "redirect:user/viewall";
 	}
 	
-	@PreAuthorize("hasAuthority('USER_READ')")
+	@PreAuthorize("hasPermission('USER', 'READ')")
 	@RequestMapping("")
 	public String viewUsers(Model model) {
 		model.addAttribute("users", userService.findUsers());
 		return "user/viewUsers";
 	}
 	
-	@PreAuthorize("hasAuthority('USER_READ')")
+	@PreAuthorize("hasPermission('USER', 'READ')")
 	@RequestMapping("/id/{userId}")
 	public String viewUser(@PathVariable String userId, Model model) {
 		model.addAttribute("user", userService.findUserById(userId));

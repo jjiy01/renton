@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.jlab.renton.domain.dao.DomainDao">
+	<select id="findByDomainId" parameterType="string" resultType="domainVo">
+		SELECT domain_id as domainId, description, domain_name as domainName FROM tb_domain WHERE domain_id = #{domainId}
+	</select>
+	
+	<select id="findDomains" resultType="domainVo">
+		select domain_id as domainId, description, domain_name as domainName from tb_domain
+	</select>
+	
+	<insert id="insertDomain" parameterType = "domainVo" useGeneratedKeys="true" keyProperty="domainId">
+		insert into tb_domain (
+			domain_name, 
+			description
+		) values (
+			#{domainName},
+			#{description}
+		)  
+	</insert>
+	
+	<update id="updateDomain" parameterType="domainVo">
+		update tb_domain
+		set
+			domain_name = #{domainName}
+		where domain_id = #{domainId}
+	</update>
+
+	<delete id="deleteDomain" parameterType = "string">
+		delete from tb_domain
+		where domain_id = #{value}
+	</delete>
+</mapper>
