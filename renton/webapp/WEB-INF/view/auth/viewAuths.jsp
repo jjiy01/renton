@@ -14,7 +14,7 @@
 <c:out value="${auth.description}" /></li>
 </c:forEach>
 </ol>
-<sec:authorize access="hasPermission('AUTH_WRITE')">
+<sec:authorize access="hasPermission('AUTH', 'WRITE')">
 <button onclick="javascript:location.href='<c:url value="/auth/viewinsert"/>';">생성</button>
 </sec:authorize>
 </body>

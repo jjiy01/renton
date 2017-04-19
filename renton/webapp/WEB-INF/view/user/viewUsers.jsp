@@ -13,6 +13,6 @@
 <li><a href="/renton/user/id/${user.userId}"><c:out value="${user.userId}"/></a> <c:out value="${user.userName}"/> <c:out value="${user.email}"/></li>
 </c:forEach>
 </ol>
-<button onclick="javascript:location.href='/renton/user/viewinsert';">생성</button>
+<button onclick="javascript:location.href='/renton/user/insert';">생성</button>
 </body>
 </html>

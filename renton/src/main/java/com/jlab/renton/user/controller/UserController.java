@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jlab.renton.user.service.UserService;
 import com.jlab.renton.user.vo.UserVo;
@@ -18,7 +19,13 @@ public class UserController {
 	private UserService userService;
 	
 	@PreAuthorize("hasPermission('USER', 'WRITE')")
-	@RequestMapping(value = "/insert")
+	@RequestMapping(value = "/insert", method = RequestMethod.GET)
+	public String insertUserView(Model model) {
+		return "user/insertUser";
+	}
+	
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
+	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insertUser(UserVo userVo, Model model) {
 		userService.insertUser(userVo);
 		model.addAttribute("user", userVo);

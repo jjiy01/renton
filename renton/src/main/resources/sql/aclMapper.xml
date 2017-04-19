@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.jlab.renton.acl.dao.AclDao">
+	<select id="findByGroupNDomain" parameterType="aclVo" resultType="aclVo">
+		SELECT 
+			permission 
+		FROM 
+			tb_acl_entry entry
+		WHERE
+			entry.group_id = (select g.group_id from tb_groups g where g.group_name = #{role.roleName}) 
+			and entry.domain_id = (select d.domain_id from tb_domain d where domain_name = #{domain.domainName}) 
+	</select>
+</mapper>
