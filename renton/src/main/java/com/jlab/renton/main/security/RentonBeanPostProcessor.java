@@ -7,7 +7,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class RentonBeanPostProcessor implements BeanPostProcessor {
 
 	@Resource(name = "filterInvocationSecurityMetadataSource")

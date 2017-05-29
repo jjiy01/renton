@@ -26,8 +26,8 @@
 	
 	<mvc:view-controller path="/role/viewinsert" view-name="role/insertRole"/>
 	<mvc:view-controller path="/auth/viewinsert" view-name="auth/insertAuth"/>
-	<mvc:view-controller path="/page3" view-name="page3"/>
-	<mvc:view-controller path="/logout" view-name="logout"/>
+	<mvc:view-controller path="/login" view-name="authentication/login"/>
+	<mvc:view-controller path="/logout" view-name="authentication/logout"/>
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

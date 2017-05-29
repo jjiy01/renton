@@ -5,17 +5,27 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
 
+	<debug/>
+	
 	<http pattern="/lib/**" security="none" />
-	<http pattern="/logout" security="none" />
+	<http pattern="/css/**" security="none" />
+	<http pattern="/js/**" security="none" />
 	
 	<global-method-security proxy-target-class="true" pre-post-annotations="enabled" />
 	
-    <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased">
-        <!-- <intercept-url pattern="/**" access="isAuthenticated()"/> -->
-        <form-login login-processing-url="/doLogin" default-target-url="/main"/>
-        <logout logout-url="/doLogout" logout-success-url="/logout" />
-        <!-- <csrf disabled="true"/> -->
+    <http auto-config="true" use-expressions="true">
+    	<intercept-url pattern="/login" access="isAnonymous()" />
+    	<intercept-url pattern="/**" access="isAuthenticated()"/>
         
+        <form-login 
+        	login-page="/login"
+        	username-parameter="userId"
+        	password-parameter="password" 
+        	login-processing-url="/doLogin" 
+        	default-target-url="/main"/>
+        	
+        <logout logout-url="/doLogout" logout-success-url="/logout" />
+
         <session-management session-fixation-protection="migrateSession">
         	<concurrency-control max-sessions="3" expired-url="/sessionTimeout.html" />
         </session-management>
@@ -35,8 +45,8 @@
     	<bean:constructor-arg>
     		<bean:list>
     			<!-- <bean:bean class="org.springframework.security.access.vote.RoleVoter"/> -->
-    			<bean:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
-    			<!-- <bean:bean class="org.springframework.security.web.access.expression.WebExpressionVoter" /> -->
+    			<!-- <bean:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/> -->
+    			<bean:bean class="org.springframework.security.web.access.expression.WebExpressionVoter" />
     			<!-- <bean:bean class="com.jlab.renton.security.RentonAccessDecisionVoter" /> -->
     		</bean:list>
     	</bean:constructor-arg>
