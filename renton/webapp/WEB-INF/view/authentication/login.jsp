@@ -13,12 +13,29 @@
 <link href="${pageContext.request.contextPath}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet">
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery/jquery.cookie.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	if($.cookie('rememberedId') != undefined) {
+		$('#userId').val($.cookie('rememberedId'));
+		$('#rememberMe').prop('checked', true);
+	}
+	
+	$('#loginForm').bind('submit', function() {
+		if($('#rememberMe').prop('checked') == true) {
+			$.cookie('rememberedId', $('#userId').val(), { expires : 7 });
+		} else {
+			$.removeCookie('rememberedId');
+		}
+	});
+});
+</script>
 <title>Renton</title>
 </head>
 <body>
 	<div class="container">
-		<form class="form-signin" action="${pageContext.request.contextPath}/doLogin" method="post">
+		<form id="loginForm" class="form-signin" action="${pageContext.request.contextPath}/doLogin" method="post">
 			<c:if test="${param.error != null}">
 				<div class="alert alert-error">
 					Failed to login.
@@ -39,7 +56,7 @@
 				placeholder="Password" required>
 			<div class="checkbox">
 				<label> 
-					<input type="checkbox" value="remember-me">Remember me
+					<input type="checkbox" id="rememberMe" value="remember-me">Remember me
 				</label>
 			</div>
 			<sec:csrfInput />
