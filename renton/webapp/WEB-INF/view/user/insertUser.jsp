@@ -14,7 +14,7 @@ Name : <input type="text" name="userName"/><br/>
 Email : <input type="text" name="email"/><br/>
 Password : <input type="text" name="password"/><br/>
 <input type="submit"/>
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<sec:csrfInput />
 </form>
 </body>
 </html>
