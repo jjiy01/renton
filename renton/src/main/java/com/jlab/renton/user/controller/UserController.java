@@ -3,6 +3,8 @@ package com.jlab.renton.user.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import com.jlab.renton.user.vo.UserVo;
 @RequestMapping("/user")
 public class UserController {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	private UserService userService;
 	
@@ -33,6 +37,8 @@ public class UserController {
 	@PreAuthorize("hasAuthority('USER_WRITE')")
 	@RequestMapping(value = "/insert", consumes = "application/json")
 	public @ResponseBody Map<String, String> insertUserJson(@RequestBody UserVo userVo) {
+		logger.info("insertUserJson");
+		
 		userService.insertUser(userVo);
 		/*if(true) {
 			throw new RuntimeException("aaa");
@@ -61,6 +67,7 @@ public class UserController {
 	@PreAuthorize("hasAuthority('USER_READ')")
 	@RequestMapping("")
 	public String viewUsers(Model model) {
+		logger.info("viewUsers");
 		model.addAttribute("users", userService.findUsers());
 		return "user/viewUsers";
 	}
