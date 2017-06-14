@@ -15,6 +15,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery/jquery-3.2.1.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/jquery/jquery.cookie.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	if($.cookie('rememberedId') != undefined) {
@@ -35,7 +36,7 @@ $(function(){
 </head>
 <body>
 	<div class="container">
-		<form id="loginForm" class="form-signin" action="${pageContext.request.contextPath}/doLogin" method="post">
+		<form id="loginForm" class="form-signin" action="${pageContext.request.contextPath}/web/doLogin" method="post">
 			<c:if test="${param.error != null}">
 				<div class="alert alert-error">
 					Failed to login.

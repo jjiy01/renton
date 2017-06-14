@@ -20,7 +20,7 @@
 	<sec:global-method-security proxy-target-class="true" pre-post-annotations="enabled"/>
 	
 	<mvc:annotation-driven />
-	<mvc:default-servlet-handler/>
+	<!-- <mvc:default-servlet-handler/> -->
 	
 	<mvc:view-controller path="/role/viewinsert" view-name="role/insertRole"/>
 	<mvc:view-controller path="/auth/viewinsert" view-name="auth/insertAuth"/>
