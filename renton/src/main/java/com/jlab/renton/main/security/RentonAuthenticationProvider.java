@@ -39,14 +39,12 @@ public class RentonAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException("Invalid username/password");
 		}
 		
-		
-		
 		return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), new HashSet<GrantedAuthority>());
 	}
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return UsernamePasswordAuthenticationToken.class.equals(authentication);
+		return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
 	}
 
 }

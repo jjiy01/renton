@@ -15,9 +15,15 @@
 	
 	<global-method-security proxy-target-class="true" pre-post-annotations="enabled" />
 	
-    <http pattern="/web/**" auto-config="true" use-expressions="true" authentication-manager-ref="webAuthenticationManager">
-    	<intercept-url pattern="/web/login" access="permitAll()" />
-    	<!-- <intercept-url pattern="/logout" access="isAnonymous()" /> -->
+    <http pattern="/web/**"
+    	auto-config="true" 
+    	use-expressions="true" 
+    	authentication-manager-ref="webAuthenticationManager"
+    	
+    	access-decision-manager-ref="affirmativeBased">
+    	
+    	<anonymous enabled="true"/>
+    	<intercept-url pattern="/web/login" access="permitAll" />
     	<intercept-url pattern="/web/**" access="isAuthenticated()"/>
         
         <form-login 
@@ -30,8 +36,10 @@
         <logout logout-url="/web/doLogout" logout-success-url="/web/login" />
 
         <session-management session-fixation-protection="migrateSession">
-        	<concurrency-control max-sessions="3" expired-url="/sessionTimeout.html" />
+        	<concurrency-control max-sessions="3" expired-url="/web/login" />
         </session-management>
+        
+        <custom-filter position="PRE_AUTH_FILTER" ref="preAuthenticationFilter"/>
     </http>
     
     <authentication-manager id="webAuthenticationManager">
@@ -42,7 +50,19 @@
         <!-- <authentication-provider ref="rentonAuthenticationProvider" /> -->
     </authentication-manager>
     
+    <authentication-manager id="preAuthenticationManager" >
+    	<authentication-provider ref="preAuthenticationProvider"/>
+    </authentication-manager>
+    
     <bean:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    
+    <bean:bean id="preAuthenticationFilter" class="com.jlab.renton.main.security.RentonPreAuthenticatedProcessingFilter">
+    	<bean:property name="authenticationManager" ref="preAuthenticationManager"/>
+    </bean:bean>
+    
+    <bean:bean id="preAuthenticationProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+    	<bean:property name="preAuthenticatedUserDetailsService" ref="authUserDetailsService"/>
+    </bean:bean>
     
     <bean:bean id="affirmativeBased" class="org.springframework.security.access.vote.AffirmativeBased">
     	<bean:constructor-arg>
