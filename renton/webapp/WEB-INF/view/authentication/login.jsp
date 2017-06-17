@@ -36,7 +36,7 @@ $(function(){
 </head>
 <body>
 	<div class="container">
-		<form id="loginForm" class="form-signin" action="${pageContext.request.contextPath}/web/doLogin" method="post">
+		<form id="loginForm" class="form-signin" action="${pageContext.request.contextPath}/auth/doLogin" method="post">
 			<c:if test="${param.error != null}">
 				<div class="alert alert-error">
 					Failed to login.

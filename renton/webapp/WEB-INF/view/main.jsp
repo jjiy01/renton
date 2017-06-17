@@ -34,7 +34,7 @@
 	Expired : ${sessionInformation.expired}<br/>
 </p>
 
-<form action="<c:url value='/web/doLogout' />"	method="post">
+<form action="<c:url value='/auth/doLogout' />"	method="post">
 	<input type="submit" value="Log out" />
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>

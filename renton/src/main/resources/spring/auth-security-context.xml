@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean:beans xmlns:bean="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/security"
+	xmlns:oauth2="http://www.springframework.org/schema/security/oauth2"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+        http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
+
+	<http pattern="/auth/oauth/token" create-session="stateless"
+		authentication-manager-ref="clientAuthenticationManager"
+		entry-point-ref="oauthAuthenticationEntryPoint">
+		<intercept-url pattern="/oauth/token" access="isAuthenticated()" />
+		<anonymous enabled="false" />
+		<!-- <http-basic entry-point-ref="oauthAuthenticationEntryPoint" /> -->
+		<custom-filter ref="clientCredentialsTokenEndpointFilter" before="BASIC_AUTH_FILTER" />
+		<access-denied-handler ref="oauthAccessDeniedHandler" />
+	</http>
+
+	<http pattern="/auth/**"
+		authentication-manager-ref="webAuthenticationManager">
+    	
+    	<anonymous enabled="true"/>
+    	<csrf disabled="true"/>
+    	<intercept-url pattern="/auth/login" access="permitAll" />
+    	<intercept-url pattern="/auth/**" access="isAuthenticated()"/>
+        
+        <form-login 
+        	login-page="/auth/login"
+        	username-parameter="userId"
+        	password-parameter="password" 
+        	login-processing-url="/auth/doLogin" 
+        	default-target-url="/web/main"/>
+        	
+        <logout logout-url="/auth/doLogout" logout-success-url="/auth/login" />
+    </http>
+    
+	<bean:bean id="clientCredentialsTokenEndpointFilter"
+		class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+		<bean:property name="authenticationManager" ref="clientAuthenticationManager" />
+	</bean:bean>
+
+	<bean:bean id="oauthAccessDeniedHandler"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
+
+	<bean:bean id="oauthAuthenticationEntryPoint"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint" />
+
+	<oauth2:authorization-server 
+		authorization-endpoint-url="/oauth/authorize"
+		user-approval-page="/authentication/confirm_access"
+		client-details-service-ref="clientDetailsService" 
+		token-services-ref="tokenServices">
+		<oauth2:authorization-code />
+		<oauth2:implicit />
+		<oauth2:client-credentials />
+	</oauth2:authorization-server>
+
+	<bean:bean id="tokenStore"
+		class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+		<bean:constructor-arg name="dataSource" ref="dataSource" />
+	</bean:bean>
+
+	<bean:bean id="tokenServices"
+		class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+		<bean:property name="tokenStore" ref="tokenStore" />
+		<!-- <bean:property name="tokenEnhancer" ref="tokenEnhancer" /> -->
+		<bean:property name="supportRefreshToken" value="true" />
+		<bean:property name="clientDetailsService" ref="clientDetailsService" />
+	</bean:bean>
+
+	<!-- <bean:bean id="tokenEnhancer" class="org.springframework.security.oauth.examples.sparklr.oauth.SparklrTokenEnhancer" 
+		/> -->
+
+	<authentication-manager id="clientAuthenticationManager">
+		<authentication-provider user-service-ref="clientDetailsUserService" />
+	</authentication-manager>
+
+	<bean:bean id="clientDetailsUserService"
+		class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+		<bean:constructor-arg ref="clientDetailsService" />
+		<!-- <bean:property name="passwordEncoder" ref=""/> -->
+	</bean:bean>
+
+	<bean:bean id="clientDetailsService"
+		class="org.springframework.security.oauth2.provider.client.JdbcClientDetailsService">
+		<bean:constructor-arg name="dataSource" ref="dataSource" />
+	</bean:bean>
+
+	<oauth2:expression-handler id="oauthExpressionHandler" />
+	<oauth2:web-expression-handler id="oauthWebExpressionHandler" />
+</bean:beans>

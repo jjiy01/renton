@@ -19,21 +19,20 @@
     	auto-config="true" 
     	use-expressions="true" 
     	authentication-manager-ref="webAuthenticationManager"
-    	
     	access-decision-manager-ref="affirmativeBased">
     	
     	<anonymous enabled="true"/>
-    	<intercept-url pattern="/web/login" access="permitAll" />
+    	<!-- <intercept-url pattern="/web/login" access="permitAll" /> -->
     	<intercept-url pattern="/web/**" access="isAuthenticated()"/>
         
         <form-login 
-        	login-page="/web/login"
+        	login-page="/auth/login"
         	username-parameter="userId"
         	password-parameter="password" 
-        	login-processing-url="/web/doLogin" 
+        	login-processing-url="/auth/doLogin" 
         	default-target-url="/web/main"/>
         	
-        <logout logout-url="/web/doLogout" logout-success-url="/web/login" />
+        <!-- <logout logout-url="/web/doLogout" logout-success-url="/web/login" /> -->
 
         <session-management session-fixation-protection="migrateSession">
         	<concurrency-control max-sessions="3" expired-url="/web/login" />

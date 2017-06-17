@@ -65,3 +65,19 @@ values (
 	select group_id from tb_groups where group_name = 'ROLE_USER',
 	'user2'
 );
+
+insert into oauth_client_details(
+	client_id, 
+	client_secret, 
+	scope, 
+	authorized_grant_types, 
+	web_server_redirect_uri,
+	authorities
+) values (
+	'renton-client',
+	'secret',
+	'READ,WRITE',
+	'authorization_code',
+	'www.naver.com',
+	'ROLE_ADMIN'
+);

@@ -29,7 +29,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.springframework" level="info" />
+	<logger name="org.springframework" level="debug" />
 	
 	<logger name="com.jlab.renton" level="debug" />
 	
