@@ -6,36 +6,9 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
         http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
 
-	<http pattern="/auth/oauth/token" create-session="stateless"
-		authentication-manager-ref="clientAuthenticationManager"
-		entry-point-ref="oauthAuthenticationEntryPoint">
-		<intercept-url pattern="/oauth/token" access="isAuthenticated()" />
-		<anonymous enabled="false" />
-		<!-- <http-basic entry-point-ref="oauthAuthenticationEntryPoint" /> -->
-		<custom-filter ref="clientCredentialsTokenEndpointFilter" before="BASIC_AUTH_FILTER" />
-		<access-denied-handler ref="oauthAccessDeniedHandler" />
-	</http>
-
-	<http pattern="/auth/**"
-		authentication-manager-ref="webAuthenticationManager">
-    	
-    	<anonymous enabled="true"/>
-    	<csrf disabled="true"/>
-    	<intercept-url pattern="/auth/login" access="permitAll" />
-    	<intercept-url pattern="/auth/**" access="isAuthenticated()"/>
-        
-        <form-login 
-        	login-page="/auth/login"
-        	username-parameter="userId"
-        	password-parameter="password" 
-        	login-processing-url="/auth/doLogin" 
-        	default-target-url="/web/main"/>
-        	
-        <logout logout-url="/auth/doLogout" logout-success-url="/auth/login" />
-    </http>
-    
 	<bean:bean id="clientCredentialsTokenEndpointFilter"
 		class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+		<bean:constructor-arg name="path" value="/auth/oauth/token" />
 		<bean:property name="authenticationManager" ref="clientAuthenticationManager" />
 	</bean:bean>
 
@@ -46,7 +19,6 @@
 		class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint" />
 
 	<oauth2:authorization-server 
-		authorization-endpoint-url="/oauth/authorize"
 		user-approval-page="/authentication/confirm_access"
 		client-details-service-ref="clientDetailsService" 
 		token-services-ref="tokenServices">
@@ -68,8 +40,7 @@
 		<bean:property name="clientDetailsService" ref="clientDetailsService" />
 	</bean:bean>
 
-	<!-- <bean:bean id="tokenEnhancer" class="org.springframework.security.oauth.examples.sparklr.oauth.SparklrTokenEnhancer" 
-		/> -->
+	<!-- <bean:bean id="tokenEnhancer" class="org.springframework.security.oauth.examples.sparklr.oauth.SparklrTokenEnhancer"/> -->
 
 	<authentication-manager id="clientAuthenticationManager">
 		<authentication-provider user-service-ref="clientDetailsUserService" />
@@ -88,4 +59,7 @@
 
 	<oauth2:expression-handler id="oauthExpressionHandler" />
 	<oauth2:web-expression-handler id="oauthWebExpressionHandler" />
+	
+	<!-- <bean:bean class="org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint"/>
+	<bean:bean class="org.springframework.security.oauth2.provider.endpoint.TokenEndpoint"/> -->
 </bean:beans>
